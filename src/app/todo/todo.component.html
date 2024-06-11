@@ -1,1 +1,39 @@
-<p>todo works!</p>
+<h2>Lista de tareas</h2>
+<ul>
+  @for (todo of todos; track todo.id) {
+    <li
+      class="d-flex gap-3 align-items-center mb-3 bg-primary text-primary-emphasis px-3 py-2 rounded justify-content-between bg-opacity-10"
+    >
+      {{ todo.task }}
+      <button class="btn btn-outline-primary fw-semibold ms-auto" (click)="deleteTodo(todo.id)">Eliminar</button>
+    </li>
+  }
+
+  <form class="d-flex gap-3" [formGroup]="formTodo" (submit)="addTodo()">
+    <div class="flex-grow-1">
+      <input
+        name="newTodo"
+        type="text"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid': hasErrors('newTodo', 'required') || hasErrors('newTodo', 'minlength'),
+          'is-valid': isValid('newTodo'),
+        }"
+        placeholder="Nueva tarea"
+        required
+        formControlName="newTodo"
+      />
+      @if (hasErrors("newTodo", "required")) {
+        <div class="invalid-feedback">Todo requerido</div>
+      }
+      @if (hasErrors("newTodo", "minlength")) {
+        <div class="invalid-feedback d-block">Todo requeriere minimo 3 carácteres</div>
+      }
+      @if (isValid("newTodo")) {
+        <div class="valid-feedback d-block">¡Se ve bien!</div>
+      }
+    </div>
+
+    <button class="btn btn-primary fw-semibold align-self-start">Agregar tarea</button>
+  </form>
+</ul>
